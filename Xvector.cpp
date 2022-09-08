@@ -62,3 +62,10 @@ double XVector::GetMaxElement(){
     }
     return value;
 }
+
+void XVector::TurnAllAbs(){
+    for(int i = 0; i < size(); i++){
+        at(i) = TakeABS(at(i));
+    }
+}
+

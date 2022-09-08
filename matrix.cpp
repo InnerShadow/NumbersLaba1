@@ -12,9 +12,9 @@ void Matrix::Print(){
 
     for(int i = 0; i < matrix.size(); i++){
         for(int i_n = 0; i_n < matrix.at(i).size(); i_n++){
-            printf("%10.3f%", matrix.at(i).at(i_n));
+            printf("%15.3f%", matrix.at(i).at(i_n));
         }
-        printf("%10.3f", Vector.at(i));
+        printf("%15.3f", Vector.at(i));
         std::cout << std::endl;
     }
     std::cout << std::endl;

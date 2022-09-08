@@ -23,4 +23,6 @@ public:
 
     double GetMinElement();
 
+    void TurnAllAbs();
+
 };

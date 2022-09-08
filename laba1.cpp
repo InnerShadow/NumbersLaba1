@@ -22,22 +22,24 @@ int main(void){
     GauseMtr.Print();
     XVector vec = GauseMtr.BackGause();
 
+    std::cout << "Vec: ";
     vec.Print();
 
     Matrix mtr1 = mtr;
     mtr1.TekeNewVector(vec);
-    mtr1.Print();
 
     XVector AX = mtr1 * vec;
 
     XVector deltaVec = AX - defualtVec;
 
-    // std::cout << "Deltavec: ";
-    // deltaVec.Print();
+    std::cout << "Deltavec: ";
+    deltaVec.Print();
 
     double delta = deltaVec.GetMaxElement();
 
     std::cout << "Delta: " << delta << std::endl;
+
+    mtr1.Print();
 
     Matrix mtr2 = mtr1.ForwardGause(true, true);
 
@@ -45,7 +47,15 @@ int main(void){
 
     XVector SolutionMTR2 = mtr2.BackGause();
 
-    XVector SIGMAVec = SolutionMTR2 + vec;
+    std::cout << "Solution: ";
+    SolutionMTR2.Print();
+
+    SolutionMTR2.TurnAllAbs();
+    vec.TurnAllAbs();
+    XVector SIGMAVec = SolutionMTR2 - vec;
+
+    std::cout << "SigmaVec: ";
+    SIGMAVec.Print();
 
     // std::cout << "Xyi: " << vec.GetMinElement()<< std::endl;
 
