@@ -57,36 +57,26 @@ int main(void){
     std::cout << "SigmaVec: ";
     SIGMAVec.Print();
 
-    // std::cout << "Xyi: " << vec.GetMinElement()<< std::endl;
-
     double Sigma = SIGMAVec.GetMinElement() / vec.GetMaxElement();
 
     std::cout << "SIGMA: " << Sigma << std::endl;
 
     Matrix LDLMatrix(3);
 
-    LDLMatrix.FillLambdaTask(1, 100, 200);
+    LDLMatrix.FillLambdaTask(1.2, 2.3, 3.4);
 
     std::cout << "Labmda task: \n";
     LDLMatrix.Print();
 
-    Matrix LT = LDLMatrix.ForwardGause(false, true);
-
-    LT.Print();
-
-    Matrix L = LDLMatrix.ForwardGause(false, true).GetTransponent();
-
-    L.Print();
-
-    Matrix D = LDLMatrix.ForwardGause(false, false);
-    D = D.GetTransponent();
-    D = D.ForwardGause(false, false);
-
-    D.Print();
-
-    Matrix Reverse = L * D * LT;
-
     LDLMatrix.ForwardGause(true, true).BackGause().Print();
+
+    LDLMatrix = LDLMatrix.LDLT();
+
+    LDLMatrix.Print();
+
+    XVector resualt = LDLMatrix * LDLMatrix.GetVector();
+
+    //resualt.Print();
 
     return 0;
 }

@@ -142,6 +142,54 @@ Matrix Matrix::GetTransponent(){
     return tempMatrix;
 }
 
+Matrix Matrix::LDLT(){
+    Matrix tempMatrix(matrix.size());
+
+    tempMatrix.matrix.at(0).at(0) = matrix.at(0).at(0);
+
+    double d =  matrix.at(0).at(0);
+
+    for(int i = 1; i < matrix.size(); i++){
+        tempMatrix.matrix.at(i).at(0) = matrix.at(i).at(0) / d;
+    }
+
+    for(int i = 1; i < matrix.size(); i++){
+        d = matrix.at(i).at(i) - d * pow(tempMatrix.matrix.at(i).at(i - 1), 2);
+        tempMatrix.matrix.at(i).at(i) = d;
+
+        for(int j = i + 1; j < matrix.size(); j++){
+            tempMatrix.matrix.at(j).at(i) = (matrix.at(j).at(i) - tempMatrix.matrix.at(i - 1).at(i - 1) * tempMatrix.matrix.at(i).at(i - 1)) / d;
+        }
+    }
+
+    // std::cout << matrix.at(2).at(2) - matrix.at(0).at(0) * pow(tempMatrix.matrix.at(2).at(0), 2) - tempMatrix.matrix.at(1).at(1) * pow(tempMatrix.matrix.at(2).at(1), 2) << std::endl;
+
+    Matrix D(matrix.size());
+
+    for(int i = 0; i < matrix.size(); i++){
+        D.matrix.at(i).at(i) = tempMatrix.matrix.at(i).at(i);
+    }
+
+    for(int  i = 0; i < matrix.size(); i++){
+        tempMatrix.matrix.at(i).at(i) = 1;
+    }
+
+    Matrix L_(matrix.size());
+    L_ = tempMatrix.GetTransponent();
+
+    Matrix LDL_(matrix.size());
+
+    LDL_ = L_ * D * tempMatrix;
+
+    LDL_.TekeNewVector(Vector);
+
+    return LDL_;
+}
+
+XVector Matrix::GetVector(){
+    return Vector;
+}
+
 void Matrix::FillTask13(){
     matrix.at(0).at(0) = 2.0f;
     matrix.at(0).at(1) = 1.0f;

@@ -32,9 +32,13 @@ public:
 
     void TekeNewVector(XVector Vector);
 
+    XVector GetVector();
+
     XVector operator* (XVector vec);
 
     Matrix operator* (Matrix mtr);
+
+    Matrix LDLT();
 
     Matrix GetTransponent();
 
