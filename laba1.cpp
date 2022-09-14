@@ -18,7 +18,7 @@ int main(void){
 
     mtr.FillTask13();
     mtr.Print();
-    Matrix GauseMtr = mtr.ForwardGause(true, true);
+    Matrix GauseMtr = mtr.ForwardGause();
     GauseMtr.Print();
     XVector vec = GauseMtr.BackGause();
 
@@ -30,6 +30,9 @@ int main(void){
 
     XVector AX = mtr1 * vec;
 
+    std::cout << "aX:" ;
+    AX.Print();
+
     XVector deltaVec = AX - defualtVec;
 
     std::cout << "Deltavec: ";
@@ -39,40 +42,50 @@ int main(void){
 
     std::cout << "Delta: " << delta << std::endl;
 
+    std::cout << "mtr1: \n";
+    mtr1.TekeNewVector(AX);
     mtr1.Print();
 
-    Matrix mtr2 = mtr1.ForwardGause(true, true);
+    Matrix mtr2 = mtr1.ForwardGause();
 
+    std::cout << "mtr2: \n";
     mtr2.Print();
 
     XVector SolutionMTR2 = mtr2.BackGause();
 
-    std::cout << "Solution: ";
+    std::cout << "SolutionMTR2: ";
     SolutionMTR2.Print();
 
     SolutionMTR2.TurnAllAbs();
     vec.TurnAllAbs();
-    XVector SIGMAVec = SolutionMTR2 - vec;
+    // XVector SIGMAVec = SolutionMTR2 - vec;
 
-    std::cout << "SigmaVec: ";
-    SIGMAVec.Print();
+    // std::cout << "SigmaVec: ";
+    // SIGMAVec.Print();
 
-    double Sigma = SIGMAVec.GetMinElement() / vec.GetMaxElement();
+    double Sigma = 0.f;
+    double max = 0.f;
+    for(int i = 0; i < vec.size(); i++){
+        max = (SolutionMTR2.at(i) - vec.at(i)) / (vec.at(i));
+        if(Sigma < max){
+            Sigma = max;
+        }
+    }
 
-    std::cout << "SIGMA: " << Sigma << std::endl;
+    std::cout << "SigMA: " << Sigma << std::endl;
 
     Matrix LDLMatrix(3);
 
-    LDLMatrix.FillLambdaTask(1.2, 2.3, 3.4);
+    LDLMatrix.FillLambdaTask(1.234, 2.3243, 3.5324);
 
     std::cout << "Labmda task: \n";
     LDLMatrix.Print();
 
-    LDLMatrix.ForwardGause(true, true).BackGause().Print();
+    LDLMatrix.ForwardGause().BackGause().Print();
 
     LDLMatrix = LDLMatrix.LDLT();
 
-    LDLMatrix.Print();
+    // LDLMatrix.Print();
 
     XVector resualt = LDLMatrix * LDLMatrix.GetVector();
 

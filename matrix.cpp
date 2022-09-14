@@ -6,15 +6,25 @@ Matrix::Matrix(int size){
     XVector vec(size);
     matrix = TempMatrix;
     Vector = vec;
+
+    for(int i = 0; i < size; i++){
+        SwapVector.push_back(i);
+    }
+}
+
+void Matrix::refreshSwapVector(){
+    for(int i = 0; i < SwapVector.size(); i++){
+        SwapVector.at(i) = i;
+    }
 }
 
 void Matrix::Print(){
 
     for(int i = 0; i < matrix.size(); i++){
         for(int i_n = 0; i_n < matrix.at(i).size(); i_n++){
-            printf("%15.3f%", matrix.at(i).at(i_n));
+            printf("%20.5f%", matrix.at(i).at(i_n));
         }
-        printf("%15.3f", Vector.at(i));
+        printf("%20.5f", Vector.at(i));
         std::cout << std::endl;
     }
     std::cout << std::endl;
@@ -42,7 +52,7 @@ void Matrix::GetMaxElement(int& swapTo, int column){
     }
 }
 
-Matrix Matrix::ForwardGause(bool IFB, bool IdDiagonal1){
+Matrix Matrix::ForwardGause(){
     Matrix tempMatrix = *this;
 
     for(int i = 0; i < tempMatrix.matrix.size(); i++){
@@ -52,8 +62,10 @@ Matrix Matrix::ForwardGause(bool IFB, bool IdDiagonal1){
 
         // int swapTo = 0;
         // tempMatrix.GetMaxElement(swapTo, i);
+
         // tempMatrix.matrix.at(i).swap(tempMatrix.matrix.at(swapTo));
-        // std::swap(Vector.at(i), Vector.at(swapTo));
+        // std::swap(tempMatrix.Vector.at(i), tempMatrix.Vector.at(swapTo));
+        // std::swap(tempMatrix.SwapVector.at(i), tempMatrix.SwapVector.at(swapTo));
 
         // std::cout << "After swap: " << std::endl;
         // tempMatrix.Print();
@@ -69,17 +81,13 @@ Matrix Matrix::ForwardGause(bool IFB, bool IdDiagonal1){
             }
         }
 
-        if(IFB){
-            for(int i_n  = i + 1; i_n < matrix.size(); i_n++){
-                tempMatrix.Vector.at(i_n) -= tempMatrix.Vector.at(i) * coefficients.at(i_n - 1);
-            }
-            tempMatrix.Vector.at(i) /= tempMatrix.matrix.at(i).at(i);
+        for(int i_n  = i + 1; i_n < matrix.size(); i_n++){
+            tempMatrix.Vector.at(i_n) -= tempMatrix.Vector.at(i) * coefficients.at(i_n - 1);
         }
+        tempMatrix.Vector.at(i) /= tempMatrix.matrix.at(i).at(i);
 
-        if(IdDiagonal1){
-            for(int i_n = matrix.size() - 1; i_n >= i; i_n--){
-                tempMatrix.matrix.at(i).at(i_n) /= tempMatrix.matrix.at(i).at(i);
-            }
+        for(int i_n = matrix.size() - 1; i_n >= i; i_n--){
+            tempMatrix.matrix.at(i).at(i_n) /= tempMatrix.matrix.at(i).at(i);
         }
     }
 
@@ -100,6 +108,9 @@ Matrix Matrix::operator* (Matrix mtr){
     return tempMatrix;
 }
 
+XVector Matrix::GetSwapVector(){
+    return SwapVector;
+}
 
 XVector Matrix::BackGause(){
     XVector tempVector(matrix.size());
@@ -128,11 +139,11 @@ XVector Matrix::operator* (XVector vec){
         // std::cout << std::endl;
     }
 
-
     return tempVector;
 }
 
 Matrix Matrix::GetTransponent(){
+
     Matrix tempMatrix(matrix.size());
     for(int i = 0; i < matrix.size(); i++){
         for(int i_n = 0; i_n < matrix.size(); i_n++){

@@ -11,9 +11,15 @@ protected:
 
     std::vector<std::vector<double>> matrix;
     XVector Vector;
+    XVector SwapVector;
 
+    void refreshSwapVector();
+
+    void Swap(int i, int swapTo);
 
 public:
+
+    XVector GetSwapVector();
 
     Matrix(int size);
 
@@ -24,7 +30,7 @@ public:
 
     void FillLambdaTask(double Lambda1, double Lambda2, double Lambda3);
 
-    Matrix ForwardGause(bool IFB, bool IdDiagonal1);
+    Matrix ForwardGause();
 
     void GetMaxElement(int& swapTo, int column);
 
